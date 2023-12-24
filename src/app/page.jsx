@@ -1,14 +1,19 @@
    import {prisma} from '@/libs/prisma'
    import TaskCard from './components/TaskCard'
 
+   // Esta linea permite que cuando se depliegue en Vercel, se actuailice einmedtiatamente los datos pedidos y se muestre en el frntend, sin esto en producción no funciona bien
+   export const dynamic="force-dynamic"
 const loadTask = async () =>{
+
+  
+
 // Hay dos enfoques para consultar los datos
 //1. Accediendo a la api que ya habiamos creado
   // const res=  await fetch('http://localhost:3000/api/task')
   // const data = await res.json()
   // console.log(data)
 
-//2. Obteniendo los datos directamente de la base de datos usando prisma  
+  //2. Obteniendo los datos directamente de la base de datos usando prisma  
   const tasks = await prisma.task.findMany()
   return tasks
     }

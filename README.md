@@ -89,6 +89,53 @@ Otro elemento importante en nextjs es que por ejemplo en la página fornten dond
 
 en el proyecto se puede ver ambas implementaciones
 
+
+### Despliegue
+En este ejemplo se describe el paso a paso para el despliegue en vercel, este ofrece el alojamiento, dominio y la base de datos, al ser un servicio gratuito por supuesto el dominio es largo.
+
+
+## Creacion de la base de datos en Vercel
+0. Se debe borrar la base de datos de desarrollo, pues ya no se trabajará con sqlite sino que se trabajará con Postgresql, se borra entonces dev.db y la carpeta migrations
+1. Se debe tener cuenta en Vercel
+2. Se elige la pestaña storage para crear la base de datos con Postgresql
+3. Despues de creada la base de datos, elijo el código necesario para la conexión (se ve en la pestaña Prisma)
+en este caso el codigo se ve así
+```
+datasource db {
+  provider = "postgresql"
+  url = env("POSTGRES_PRISMA_URL") // uses connection pooling
+  directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
+}
+```
+4. El código anterior necesita de dos variables de entorno POSTGRES_PRISMA_URL Y POSTGRES_URL_NON_POOLING, las cuales se toman de la pestala env en Vercel y se lleva al archivo .env del proyecto
+5. Ejecuto Prisma para que me genera la migracion asociada a Postgresql
+```
+npx prisma migrate dev
+```
+(cuando pida el nombre de la migracion se pone lo que sea, normalmente se usa init)
+A este punto la base de datos está cargada en vercel
+
+## Despliegue en Vercel
+6. En el archivo package.json se agrega el comando postinstall que permite generar la base de datos y ponerla a correr en vercel
+```
+"postinstall":"prisma generate"
+```
+7. Se instala cun CLI de vercel
+```
+npm i vercel -g
+```
+8. Se debe loguear el Vercel desde el CLI (Se sugiere ya tener abiero vercel en el navegador para que el CLI lo detecte inmediatamente)
+```
+vercel login
+```
+9. Para garantizar que en Vercel no se quede mostrando solaente lo que hay en caché y que por lo tanto no se nota que se actualiza un dato, por ejmplo se hace una tarea nueva y no se ve reflejada en el frontend, se debe entonces usar la siguiente sentencia en el código en las páginas donde se requiera (en este caso se usó en page pricipal)
+`export const dynamic="force-dynamic"`
+
+9. Despliego. Finalmente el despliegue es muy sencllo con el comando vercel y listo, se lee muy bien las opciones que el despliegue te muestra pero en condiciones normales a todo se le da ENTER
+```
+vercel
+```
+
 ***
 ## Maolink Software
 Diciembre 2023 
