@@ -22,7 +22,7 @@ Desarrollo de una aplicación web usando Nextjs, el cual consiste un una pequeñ
 
 **Repositorio:**  [Repo](https://github.com/linkmao/nextjs-todo)
 
-**Deploy** [Sin despliegue](*)
+**Deploy** [Vercel](https://nextjs-todo-49v7mhxw5-maolink.vercel.app)
 
 ## Como correr
 ```
